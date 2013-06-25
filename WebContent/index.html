@@ -5,13 +5,13 @@
 <title>Insert title here</title>
 <script src="js/modernizr.js"></script>
 <script src="js/jquery-1.10.1.min.js"></script>
+<script src="js/knockout-2.2.1.js"></script>
 
 <script>
-	$(document)
-			.ready(
-					function() {
-						if (Modernizr.inputtypes.date) { // modernizr
-							$('<p>Data: <input type="date"/></p>').appendTo('#campos'); // jquery
+$(document).ready(function() {
+		
+						if (Modernizr.inputtypes.date) {
+							$('<p>Data: <input type="date"/></p>').appendTo('#campos'); 
 						} else {
 							$('<p>Data: <input type="text"/></p>').appendTo('#campos');
 						}
@@ -29,13 +29,42 @@
 						}
 
 						if (Modernizr.inputtypes.range) {
-							$('<p>Range de preço: <input type="range"/></p>').appendTo('#campos');
+							$('<p>Range de preço: <input id="range" name="changing" type="range" min="0" max="100" /></p>').appendTo('#campos');
+							$('<p class="note">Valor: <span id="currentValue">50</span></p>').appendTo('#campos');
 						} else {
 							$('<p>Preço mínimo: <input type="text"/></p>').appendTo('#campos');
 							$('<p>Preço máximo: <input type="text"/></p>').appendTo('#campos');
 						}
 
+						$('#range').change(function(){
+							$('#currentValue').html(this.value);
+						});
+						
+						var ViewModel = function(autor, titulo) {
+						    this.autorNome = ko.observable(autor);
+						    this.tituloNome = ko.observable(titulo);
+						 
+						    this.autorTitulo = ko.computed(function() {
+						        return this.autorNome() + " " + this.tituloNome();
+						    }, this);
+						};
+						ko.applyBindings(new ViewModel("Tolkien", "Sociedade do anel"));
+						
+					$('#autorNomeSpan').click(function(){
+						var autorNome = $("#autorNomeSpan").html();
+						$("#autorNomeInput").attr('value', autorNome);
+						$("#autorNomeSpan").toggle();
+						$("#autorNomeInput").toggle();
 					});
+					
+					$('#autorNomeInput').blur(function(){
+						var autorNome = $("#autorNomeInput").val();
+						$("#autorNomeSpan").html(autorNome);
+						$("#autorNomeInput").toggle();
+						$("#autorNomeSpan").toggle();
+					});
+						
+});
 </script>
 
 </head>
@@ -43,6 +72,11 @@
 	<form>
 
 		<div id="campos"></div>
+		<p>
+			Autor: <span id="autorNomeSpan">Tolkien</span> <input type="text"
+				id="autorNomeInput" value="Tolkien" style="display: none;" />
+		</p>
+
 		<input type="submit" value="send" />
 	</form>
 </body>
