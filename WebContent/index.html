@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Insert title here</title>
+<script src="js/modernizr.js"></script>
+<script src="js/jquery-1.10.1.min.js"></script>
+
+<script>
+	$(document)
+			.ready(
+					function() {
+						if (Modernizr.inputtypes.date) {
+							$('<p><input type="date"/></p>').appendTo('#campos');
+						}
+						if (Modernizr.inputtypes.email) {
+							$('<p><input type="email"/></p>').appendTo('#campos');
+						}
+
+						if (Modernizr.inputtypes.color) {
+							$('<p><input type="color"/></p>').appendTo('#campos');
+						}
+
+						if (Modernizr.inputtypes.range) {
+							$('<p><input type="range"/></p>').appendTo('#campos');
+						}
+
+					});
+</script>
+
+</head>
+<body>
+	<form>
+
+		<div id="campos">
+		</div>
+		<input type="submit" value="send" />
+	</form>
+</body>
+</html>
